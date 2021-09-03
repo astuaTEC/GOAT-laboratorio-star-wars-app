@@ -28,6 +28,7 @@ public class Main {
                     ApiResponse<Character> parsedResponse = mapper.readValue(
                             result, mapper.getTypeFactory().constructParametricType(ApiResponse.class, Character.class));
                     System.out.println(result);
+                    System.out.println("Hola mundo");
                 }
             } finally {
                 response.close();
