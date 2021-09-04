@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -7,11 +9,14 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
     private static ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper();
 
     public static void main(String[] args) throws IOException, IOException {
+
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try {
             HttpGet request = new HttpGet("https://swapi.dev/api/people");
@@ -25,8 +30,13 @@ public class Main {
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
                     var result = EntityUtils.toString(entity);
+
                     ApiResponse<Character> parsedResponse = mapper.readValue(
                             result, mapper.getTypeFactory().constructParametricType(ApiResponse.class, Character.class));
+
+                    List<Character> personajes = parsedResponse.getResults();
+                    Jframe frame = new Jframe(personajes);
+
                     System.out.println(result);
                     System.out.println("Hola mundo");
                 }
